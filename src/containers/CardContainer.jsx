@@ -10,8 +10,8 @@ class CardContainer extends Component {
     componentWillMount() {
         axios
             .get(`http://api.openweathermap.org/data/2.5/weather?q=${this.props.city}&APPID=${this.apiKey}`)
-            .then(response => this.parseTemperature(response))
-            .then(temperature => this.convertToCelsius(temperature))
+            .then(this.parseTemperature)
+            .then(this.convertToCelsius)
             .then(temperature => this.setState({temperature: temperature, loaded: true}) )
     }
 
