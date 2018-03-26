@@ -3,10 +3,16 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import Card from '../components/Card';
 import CityMap from '../components/CityMap';
+import { selectCity } from '../actions';
 
 class CardContainer extends Component {
     state = { loaded: false, temperature: null, lat: null, lng: null };
     apiKey = process.env.REACT_APP_WEATHER_API_KEY;
+
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
 
     componentWillMount() {
         axios
@@ -15,19 +21,37 @@ class CardContainer extends Component {
             .then(newState => this.setState(newState))
     }
 
+    handleClick() {
+        this.props.selectCity(this.props.city);
+    }
+
+    renderMap() {
+        let { selectedCityName, city } = this.props;
+        if (selectedCityName === city) {
+            return(
+                <CityMap
+                    lat={this.state.lat}
+                    lng={this.state.lng}
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: `400px` }} />}
+                    mapElement={<div style={{ height: `100%` }} />}
+                />
+            );
+        }
+    }
+
     render() {
         if (this.state.loaded) {
             return(
                 <div>
-                  <Card city={this.props.city} temperature={this.state.temperature}/>
-                  <CityMap
-                      lat={this.state.lat}
-                      lng={this.state.lng}
-                      googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
-                      loadingElement={<div style={{ height: `100%` }} />}
-                      containerElement={<div style={{ height: `400px` }} />}
-                      mapElement={<div style={{ height: `100%` }} />}
-                  />
+                  <a href="#" onClick={this.handleClick}>
+                    <Card
+                        city={this.props.city}
+                        temperature={this.state.temperature}
+                    />
+                  </a>
+                  {this.renderMap()}
                 </div>
             );
         } else {
@@ -50,7 +74,15 @@ class CardContainer extends Component {
 };
 
 const mapStateToProps = (state) => {
-    return { state }
+    return {
+        selectedCityName: state.selectedCityName
+    }
 };
 
-export default connect(mapStateToProps)(CardContainer);
+const mapDispatchToProps = (dispatch) => {
+    return({
+        selectCity: (cityName) => dispatch(selectCity(cityName))
+    });
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardContainer);
