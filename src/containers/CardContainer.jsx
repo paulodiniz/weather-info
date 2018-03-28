@@ -79,10 +79,5 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return({
-        selectCity: (cityName) => dispatch(selectCity(cityName))
-    });
-};
-
+const mapDispatchToProps = { selectCity }
 export default connect(mapStateToProps, mapDispatchToProps)(CardContainer);
