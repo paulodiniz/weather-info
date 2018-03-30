@@ -26,8 +26,8 @@ class CardContainer extends Component {
     }
 
     renderMap() {
-        let { selectedCityName, city } = this.props;
-        if (selectedCityName === city) {
+        const { expanded } = this.props;
+        if (expanded) {
             return(
                 <CityMap
                     lat={this.state.lat}
@@ -73,10 +73,9 @@ class CardContainer extends Component {
     }
 };
 
-const mapStateToProps = (state) => {
-    return {
-        selectedCityName: state.selectedCityName
-    }
+const mapStateToProps = (state, ownProps) => {
+    const expanded = state.selectedCityName == ownProps.city;
+    return { expanded };
 };
 
 const mapDispatchToProps = { selectCity }
