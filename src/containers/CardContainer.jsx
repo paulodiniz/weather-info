@@ -4,6 +4,7 @@ import axios from 'axios';
 import Card from '../components/Card';
 import CityMap from '../components/CityMap';
 import { selectCity } from '../actions';
+import moment from 'moment-timezone';
 
 class CardContainer extends Component {
     state = { loaded: false, temperature: null, lat: null, lng: null };
@@ -41,6 +42,10 @@ class CardContainer extends Component {
         }
     }
 
+    localTime() {
+        return moment().tz(this.props.timezone).format('ha');
+    }
+
     render() {
         if (this.state.loaded) {
             return(
@@ -49,6 +54,7 @@ class CardContainer extends Component {
                     <Card
                         city={this.props.city}
                         temperature={this.state.temperature}
+                        localTime={this.localTime()}
                     />
                   </a>
                   {this.renderMap()}
@@ -74,7 +80,7 @@ class CardContainer extends Component {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const expanded = state.selectedCityName == ownProps.city;
+    const expanded = state.selectedCityName === ownProps.city;
     return { expanded };
 };
 

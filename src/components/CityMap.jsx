@@ -6,12 +6,12 @@ import {
     Marker,
 } from "react-google-maps";
 
-const CityMap = (props) => {
+const CityMap = ({lat, lng}) => {
     return(
         <GoogleMap
             defaultZoom={8}
-            defaultCenter={{ lat: props.lat, lng: props.lng }}>
-          <Marker position={{ lat: props.lat, lng: props.lng }} />
+            defaultCenter={{ lat: lat, lng: lng }}>
+          <Marker position={{ lat: lat, lng: lng }} />
         </GoogleMap>
     );
 };

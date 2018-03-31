@@ -5,7 +5,7 @@ import CardContainer from '../containers/CardContainer';
 const CityWeatherList = ({cities}) => {
     return(
         <main className="mw6 center">
-          {cities.map(city => <CardContainer city={city} key={city} />)}
+          {cities.map(city => <CardContainer city={city.name} key={city.name} timezone={city.timezone}/>)}
         </main>
     );
 }
