@@ -10,11 +10,6 @@ class CardContainer extends Component {
     state = { loaded: false, temperature: null, lat: null, lng: null };
     apiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-    }
-
     componentWillMount() {
         axios
             .get(`http://api.openweathermap.org/data/2.5/weather?q=${this.props.city}&APPID=${this.apiKey}`)
@@ -50,7 +45,7 @@ class CardContainer extends Component {
         if (this.state.loaded) {
             return(
                 <div>
-                  <a href="#" onClick={this.handleClick}>
+                  <a href="#" onClick={() => this.handleClick()}>
                     <Card
                         city={this.props.city}
                         temperature={this.state.temperature}
